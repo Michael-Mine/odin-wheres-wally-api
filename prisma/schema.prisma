@@ -11,3 +11,16 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Character {
+  id      Int     @id @default(autoincrement())
+  name    String
+  xCoord  Int
+  yCoord  Int
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  name  String
+  time  Int
+}

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Michael-Mine/odin-wheres-wally-api#readme",
   "dependencies": {
+    "@prisma/client": "^7.8.0",
     "express": "^5.2.1",
     "express-validator": "^7.3.2"
   },
