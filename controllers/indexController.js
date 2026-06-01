@@ -20,21 +20,23 @@ const checkCoords = [
       const characterData = await prisma.character.findFirst({
         where: { name: character },
       });
-
       console.log(characterData);
-
-      res.json({ message: "received" });
+      if (
+        Number(xCoord) >= characterData.xCoord - 100 &&
+        Number(xCoord) <= characterData.xCoord + 100 &&
+        Number(yCoord) >= characterData.yCoord - 100 &&
+        Number(yCoord) <= characterData.yCoord + 100
+      ) {
+        res.json(characterData);
+      } else {
+        res.json({ message: "incorrect" });
+      }
     } catch (err) {
       console.error(err);
       return next(err);
     }
   },
 ];
-
-// query Character
-// check xCoord & yCoord
-// if correct, send name & coords
-// if incorrect, send message
 
 module.exports = {
   checkCoords,
