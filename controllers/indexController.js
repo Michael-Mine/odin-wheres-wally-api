@@ -1,5 +1,6 @@
 const { body, validationResult, matchedData } = require("express-validator");
 const { prisma } = require("../lib/prisma.js");
+const checkCoordsLogic = require("../utils/checkCoordsLogic");
 
 const validatePost = [
   body("character").trim().notEmpty().isAlpha(),
@@ -20,12 +21,14 @@ const checkCoords = [
       const characterData = await prisma.character.findFirst({
         where: { name: character },
       });
+      // if (!characterData) {
+      //   res.status(400).json({ message: "character not found" });
+      // }
+
       console.log(characterData);
       if (
-        Number(xCoord) >= characterData.xCoord - 100 &&
-        Number(xCoord) <= characterData.xCoord + 100 &&
-        Number(yCoord) >= characterData.yCoord - 100 &&
-        Number(yCoord) <= characterData.yCoord + 100
+        checkCoordsLogic.checkXCoords(xCoord, characterData.xCoord) &&
+        checkCoordsLogic.checkYCoords(yCoord, characterData.yCoord)
       ) {
         res.json(characterData);
       } else {
