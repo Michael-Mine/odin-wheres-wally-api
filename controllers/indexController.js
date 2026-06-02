@@ -1,5 +1,6 @@
 const { body, validationResult, matchedData } = require("express-validator");
 const { prisma } = require("../lib/prisma.js");
+const CustomNotFoundError = require("../errors/CustomNotFoundError");
 const checkCoordsLogic = require("../utils/checkCoordsLogic");
 
 const validatePost = [
@@ -21,9 +22,9 @@ const checkCoords = [
       const characterData = await prisma.character.findFirst({
         where: { name: character },
       });
-      // if (!characterData) {
-      //   res.status(400).json({ message: "character not found" });
-      // }
+      if (!characterData) {
+        throw new CustomNotFoundError("Character not found");
+      }
 
       console.log(characterData);
       if (
