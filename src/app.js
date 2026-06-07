@@ -4,12 +4,14 @@ const cors = require("cors");
 const app = express();
 
 const gameRouter = require("./routes/gameRouter");
+const sessionRouter = require("./routes/sessionRouter");
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/games", gameRouter);
+app.use("/sessions", sessionRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
