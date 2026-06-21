@@ -1,7 +1,7 @@
 const { body, validationResult, matchedData } = require("express-validator");
 const { prisma } = require("../../lib/prisma.js");
 const CustomNotFoundError = require("../errors/CustomNotFoundError.js");
-const checkCoordsLogic = require("../utils/checkCoordsLogic.js");
+const checkCoordsLogic = require("./check-coords-logic.js");
 
 const validatePost = [
   body("character").trim().notEmpty().isAlpha(),

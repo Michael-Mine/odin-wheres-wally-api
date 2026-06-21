@@ -1,4 +1,4 @@
-const checkCoordsLogic = require("./checkCoordsLogic");
+const checkCoordsLogic = require("./check-coords-logic");
 
 test("checkXCoords", () => {
   expect(checkCoordsLogic.checkXCoords(99, 200)).not.toBeTruthy();

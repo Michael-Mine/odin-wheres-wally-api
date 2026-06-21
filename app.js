@@ -3,8 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const gameRouter = require("./routes/gameRouter");
-const sessionRouter = require("./routes/sessionRouter");
+const gameRouter = require("./api/game/game-router");
+const sessionRouter = require("./api/session/session-router");
 
 app.use(cors());
 app.use(express.json());
