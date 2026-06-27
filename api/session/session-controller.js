@@ -20,6 +20,8 @@ const startSession = [
         data: { gameId: Number(gameId) },
       });
 
+      console.log("session added");
+
       res.status(201).json({ sessionId: session.id });
     } catch (err) {
       console.error("Start session error: ", err);
@@ -49,6 +51,8 @@ const finishSession = [
 
       const durationInMilliseconds =
         currentTime.getTime() - session.startTime.getTime();
+
+      console.log("session finished");
 
       res.status(200).json({ time: durationInMilliseconds });
     } catch (err) {
