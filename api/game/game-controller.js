@@ -4,12 +4,13 @@ const CustomNotFoundError = require("../errors/CustomNotFoundError.js");
 const checkCoordsLogic = require("./check-coords-logic.js");
 
 const validatePost = [
+  body("gameId").trim().notEmpty().isNumeric().isInt({ min: 1, max: 9 }),
   body("character").trim().notEmpty().isAlpha(),
   body("xCoord").trim().notEmpty().isNumeric().isInt({ min: 0, max: 9999 }),
   body("yCoord").trim().notEmpty().isNumeric().isInt({ min: 0, max: 9999 }),
 ];
 
-const checkCoords = [
+const checkCharacterLocation = [
   validatePost,
   async (req, res, next) => {
     const errors = validationResult(req);
@@ -17,10 +18,10 @@ const checkCoords = [
       return res.status(400).json(errors.array());
     }
     try {
-      const { character, xCoord, yCoord } = matchedData(req);
+      const { gameId, character, xCoord, yCoord } = matchedData(req);
 
       const characterData = await prisma.character.findFirst({
-        where: { name: character },
+        where: { gameId: Number(gameId), name: character },
       });
 
       if (!characterData) {
@@ -42,5 +43,5 @@ const checkCoords = [
 ];
 
 module.exports = {
-  checkCoords,
+  checkCharacterLocation,
 };

@@ -3,6 +3,6 @@ const gameRouter = Router();
 
 const gameController = require("./game-controller");
 
-gameRouter.post("/coords", gameController.checkCoords);
+gameRouter.post("/coords", gameController.checkCharacterLocation);
 
 module.exports = gameRouter;
