@@ -29,6 +29,66 @@ async function getLeaderboard(req, res) {
   }
 }
 
+const lengthErr = "must be between 1 and 40 characters.";
+
+const validatePost = [
+  body("sessionId").trim().notEmpty(),
+  body("username")
+    .trim()
+    .notEmpty()
+    .isLength({ min: 1, max: 40 })
+    .withMessage(`Last Name ${lengthErr}`),
+];
+
+const submitScore = [
+  validatePost,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array());
+    }
+    try {
+      const { sessionId, username } = matchedData(req);
+      const { gameSlug } = req.params;
+
+      const session = await prisma.session.findUnique({
+        where: { id: sessionId },
+      });
+
+      if (!session) {
+        throw new CustomNotFoundError("Session not found");
+      }
+
+      if (!session.endTime) {
+        return res.status(400).json({ message: "Session time not found" });
+      }
+
+      const durationInMilliseconds =
+        session.endTime.getTime() - session.startTime.getTime();
+
+      const savedScore = await prisma.score.create({
+        data: {
+          username,
+          time: durationInMilliseconds,
+          gameId: session.gameId,
+        },
+      });
+
+      await prisma.session.delete({
+        where: { id: sessionId },
+      });
+
+      res.status(201).json({
+        message: "Score saved!",
+        score: savedScore,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   getLeaderboard,
+  submitScore,
 };

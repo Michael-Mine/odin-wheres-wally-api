@@ -42,9 +42,17 @@ const finishSession = [
     try {
       const { sessionId } = matchedData(req);
 
+      const session = await prisma.session.findUnique({
+        where: { id: sessionId },
+      });
+
+      if (!session) {
+        throw new CustomNotFoundError("Session not found");
+      }
+
       const currentTime = new Date();
 
-      const session = await prisma.session.update({
+      await prisma.session.update({
         where: { id: sessionId },
         data: { endTime: currentTime },
       });

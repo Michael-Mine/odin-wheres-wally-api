@@ -36,7 +36,6 @@ const checkCoords = [
         res.json({ message: "incorrect" });
       }
     } catch (err) {
-      console.error(err);
       return next(err);
     }
   },
