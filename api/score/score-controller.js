@@ -21,7 +21,6 @@ async function getLeaderboard(req, res) {
         time: true,
       },
     });
-
     res.status(200).json(scores);
   } catch (err) {
     console.error(err);
@@ -29,15 +28,15 @@ async function getLeaderboard(req, res) {
   }
 }
 
-const lengthErr = "must be between 1 and 40 characters.";
+const lengthErr = "must be between 3 and 15 characters.";
 
 const validatePost = [
   body("sessionId").trim().notEmpty(),
   body("username")
     .trim()
     .notEmpty()
-    .isLength({ min: 1, max: 40 })
-    .withMessage(`Last Name ${lengthErr}`),
+    .isLength({ min: 3, max: 15 })
+    .withMessage(`Name ${lengthErr}`),
 ];
 
 const submitScore = [
@@ -56,7 +55,7 @@ const submitScore = [
       });
 
       if (!session) {
-        throw new CustomNotFoundError("Session not found");
+        return res.status(400).json({ message: "Session not found" });
       }
 
       if (!session.endTime) {
