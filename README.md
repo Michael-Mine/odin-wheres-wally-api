@@ -138,7 +138,7 @@ npx prisma generate
 Pre-deploy Command:
 
 ```bash
-npx prisma migrate deploy
+npx prisma migrate deploy && npx prisma generate
 ```
 
 5. Add character coordinates in the Railway Posgres database.
